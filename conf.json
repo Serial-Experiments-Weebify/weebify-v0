@@ -1,0 +1,15 @@
+{
+    "s3": {
+        "auth": {
+            "endpoint": "https://{service}.{region}.wasabisys.com/",
+            "region": "eu-central-1",
+            "accessKeyId": "7F86S3EV3YLM8DEG5CL0",
+            "secretAccesssKey": "VOQMaHRntlqp7iCTBfSgaLJsMnKbiJ5SRi9W704w"
+        },
+        "general": {
+            "bucket": "cdn.femboy.si",
+            "prefix": "a/",
+            "baseUrl": "https://cdn.femboy.si/"
+        }
+    }
+}

@@ -1,0 +1,24 @@
+
+@font-face {
+    font-family: 'Montserrat';
+    src: url('Motserrat.ttf') format('truetype');
+}
+
+* {
+    font-family: 'Montserrat';
+}
+
+h1, h2, h3, span {
+    color: #fff;
+}
+
+.category {
+    background-color: #262440;
+    padding: 0.5em;
+    border-radius: 0.5em;
+    margin: 1em;
+}
+
+body {
+    background-color: #14131C;
+}
