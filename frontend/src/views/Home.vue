@@ -1,6 +1,7 @@
 <template>
     <div>
         <div id="logo-bar">
+            <img src="../assets/logo.png" alt="">
             <h1 id="logo">Weebify v0</h1>
             <input
                 type="text"
@@ -72,7 +73,10 @@ export default {
     align-items: center;
     gap: 1em;
 }
-
+#logo-bar > img {
+    height: 3em;
+    width: 3em;
+}
 #filter {
     padding: .5em;
     font-size: 1em;

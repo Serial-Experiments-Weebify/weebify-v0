@@ -1,14 +1,16 @@
-
 @font-face {
-    font-family: 'Montserrat';
-    src: url('Motserrat.ttf') format('truetype');
+    font-family: "Montserrat";
+    src: url("/Motserrat.ttf") format("truetype");
 }
 
 * {
-    font-family: 'Montserrat';
+    font-family: "Montserrat";
 }
 
-h1, h2, h3, span {
+h1,
+h2,
+h3,
+span {
     color: #fff;
 }
 
@@ -20,9 +22,8 @@ h1, h2, h3, span {
 }
 
 body {
-    background-color: #14131C;
+    background-color: #14131c;
 }
-
 
 input {
     outline: none;
@@ -35,8 +36,48 @@ input[type="text"] {
     border-radius: 0.2rem;
 }
 
-input[type="text"]:hover 
-input[type="text"]:active,
+input[type="text"]:hover input[type="text"]:active,
 input[type="text"]:focus {
-    border: 1px solid #4BBBEF;
+    border: 1px solid #4bbbef;
+}
+
+::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+}
+
+::-webkit-scrollbar-button {
+    width: 0px;
+    height: 0px;
+}
+
+::-webkit-scrollbar-thumb,
+::-webkit-scrollbar-thumb:hover {
+    background: #5abeed;
+    border: none;
+    border-radius: 0px;
+}
+
+::-webkit-scrollbar-thumb:active {
+    background: #4bbbef;
+}
+
+::-webkit-scrollbar-track,
+::-webkit-scrollbar-track:hover {
+    background: #14131c;
+    border: none;
+    border-radius: 0px;
+}
+
+::-webkit-scrollbar-track:active {
+    background: #262440;
+}
+
+::-webkit-scrollbar-corner {
+    background: transparent;
+}
+
+* {
+    scrollbar-width: thin;
+    scrollbar-color: #5abeed #14131c;
 }
