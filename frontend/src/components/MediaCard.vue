@@ -4,7 +4,7 @@
         :style="{ backgroundImage: `url('${media.imageUrl}')` }"
         @click="gotoMedia"
     >
-        <span class="title">{{ media.name }}</span>
+        <span class="title">{{ cleanName }}</span>
         <span class="se-number" v-if="media.type === 'multiple'">{{
             totalEpisodes
         }}</span>
@@ -23,6 +23,9 @@ export default {
 
             return episodes;
         },
+        cleanName() {
+            return this.media.name.replace(/-/g, " ");
+        }
     },
     methods: {
         gotoMedia() {
@@ -44,8 +47,9 @@ export default {
 
 <style scoped>
 .media {
-    height: 10em;
-    width: 7em;
+    /* height: 10em; */
+    /* width: 7em; */
+    aspect-ratio: .7;
     position: relative;
     overflow: hidden;
     display: flex;
@@ -64,6 +68,10 @@ export default {
     bottom: 0;
     background-color: #000a;
     backdrop-filter: blur(4px);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
     color: #fff;
 }
 

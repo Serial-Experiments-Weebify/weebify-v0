@@ -22,3 +22,21 @@ h1, h2, h3, span {
 body {
     background-color: #14131C;
 }
+
+
+input {
+    outline: none;
+}
+
+input[type="text"] {
+    color: #fff;
+    background-color: #0000;
+    border: 1px #262440 solid;
+    border-radius: 0.2rem;
+}
+
+input[type="text"]:hover 
+input[type="text"]:active,
+input[type="text"]:focus {
+    border: 1px solid #4BBBEF;
+}

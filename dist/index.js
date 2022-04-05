@@ -32,6 +32,7 @@ function main() {
     return __awaiter(this, void 0, void 0, function* () {
         const config = JSON.parse(yield (0, promises_1.readFile)((_a = process.env.CONF) !== null && _a !== void 0 ? _a : './conf.json', 'utf8'));
         const s = new s3_scraper_1.AWSScraper(config.s3);
+        1;
         allMedia = (0, s3_scraper_1.serialize)(yield s.scan());
         setInterval(() => __awaiter(this, void 0, void 0, function* () {
             allMedia = (0, s3_scraper_1.serialize)(yield s.scan());
