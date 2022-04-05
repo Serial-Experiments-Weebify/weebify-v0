@@ -72,7 +72,7 @@ export default {
             return [...Object.values(this.media.seasons)];
         },
         cleanTitle() {
-            return this.media.name?.replace(/-/g, " ") ?? "?";
+            return this.media?.name?.replace(/-/g, " ") ?? "?";
         },
         ...mapState(["loading", "valid"]),
     },
@@ -90,12 +90,22 @@ export default {
 }
 
 #title {
-    font-size: 3em;
+    font-size: 2em;
+    text-transform: capitalize;
     margin: 0;
 }
 #anime-bar img {
     height: 15em;
     border-radius: 0.5em;
+}
+@media screen and (max-width: 800px) {
+    #anime-bar {
+        flex-direction: column;
+        align-items: center;
+    }
+    #anime-bar > h1 {
+        text-align: center;
+    }
 }
 
 .episode {

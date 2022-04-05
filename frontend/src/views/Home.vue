@@ -1,7 +1,7 @@
 <template>
     <div>
         <div id="logo-bar">
-            <img src="../assets/logo.png" alt="">
+            <img src="../assets/logo.png" alt="" />
             <h1 id="logo">Weebify v0</h1>
             <input
                 type="text"
@@ -14,13 +14,21 @@
         <div class="category">
             <h2>Seasoned</h2>
             <div class="main-grid">
-                <media-card v-for="m in filteredSeasoned" :key="m.name" :media="m" />
+                <media-card
+                    v-for="m in filteredSeasoned"
+                    :key="m.name"
+                    :media="m"
+                />
             </div>
         </div>
         <div class="category">
             <h2>Unseasoned</h2>
             <div class="main-grid">
-                <media-card v-for="m in filteredUnseasoned" :key="m.name" :media="m" />
+                <media-card
+                    v-for="m in filteredUnseasoned"
+                    :key="m.name"
+                    :media="m"
+                />
             </div>
         </div>
     </div>
@@ -63,11 +71,18 @@ export default {
 </script>
 
 <style>
+@media screen and (max-width: 800px) {
+    #logo {
+        display: none;
+    }
+}
+
 #logo {
     color: #e35e6e;
 }
 
 #logo-bar {
+    margin: 0 1em;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -78,13 +93,12 @@ export default {
     width: 3em;
 }
 #filter {
-    padding: .5em;
+    padding: 0.5em;
     font-size: 1em;
     border-radius: 1em;
 }
 
-#filter:hover 
-#filter:active,
+#filter:hover #filter:active,
 #filter:focus {
     border-color: #e35e6e;
 }
