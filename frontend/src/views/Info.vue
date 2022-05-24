@@ -6,9 +6,16 @@
         <h1>Error</h1>
     </div>
     <div v-else>
-        <h1 id="title"><img :src="media?.imageUrl ?? ''" /> {{ media?.name ?? "a" }}</h1>
+        <div id="anime-bar">
+            <img :src="media?.imageUrl ?? ''" />
+            <h1 id="title">{{ cleanTitle }}</h1>
+        </div>
 
-        <div class="season category" v-for="season in seasons" :key="season.season">
+        <div
+            class="season category"
+            v-for="season in seasons"
+            :key="season.season"
+        >
             <h2>Season {{ season.season }}</h2>
             <h3
                 class="episode"
@@ -16,7 +23,15 @@
                 :key="`${episode.season}-${episode.episode}-${
                     episode.extraName ?? ''
                 }`"
-                @click="() => {goto(episode.season,episode.episode,episode.extraName)}"
+                @click="
+                    () => {
+                        goto(
+                            episode.season,
+                            episode.episode,
+                            episode.extraName
+                        );
+                    }
+                "
             >
                 {{
                     `Episode ${episode.episode}${episode.extra ? "." : ""}${
@@ -35,15 +50,15 @@ export default {
     props: ["name"],
     methods: {
         goto(s, e, extra) {
-            console.log({s,e,extra});
+            console.log({ s, e, extra });
             this.$router.push({
-                name:"WatchEpisode",
+                name: "WatchEpisode",
                 params: {
-                    season:s,
-                    episode:e,
-                    extra
-                }
-            })
+                    season: s,
+                    episode: e,
+                    extra,
+                },
+            });
         },
     },
     computed: {
@@ -56,27 +71,50 @@ export default {
 
             return [...Object.values(this.media.seasons)];
         },
+        cleanTitle() {
+            return this.media?.name?.replace(/-/g, " ") ?? "?";
+        },
         ...mapState(["loading", "valid"]),
     },
 };
 </script>
 
 <style>
-#title {
-    font-size: 3em;
+#anime-bar {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-end;
+    gap: 1em;
+    margin:1em;
 }
-#title img {
-    height: 8em;
-    border-radius: .5em;
+
+#title {
+    font-size: 2em;
+    text-transform: capitalize;
+    margin: 0;
+}
+#anime-bar img {
+    height: 15em;
+    border-radius: 0.5em;
+}
+@media screen and (max-width: 800px) {
+    #anime-bar {
+        flex-direction: column;
+        align-items: center;
+    }
+    #anime-bar > h1 {
+        text-align: center;
+    }
 }
 
 .episode {
-    margin: .1em;
-    padding: .6em .3em;
+    margin: 0.1em;
+    padding: 0.6em 0.3em;
 }
 
 .episode:hover {
-    background-color: #4BBBEF ;
+    background-color: #4bbbef;
     border-radius: 1em;
 }
 </style>
