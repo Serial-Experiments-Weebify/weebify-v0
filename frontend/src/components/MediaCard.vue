@@ -63,7 +63,7 @@ export default {
     right: 0;
     bottom: 0;
     background-color: #000a;
-    backdrop-filter: blur(4px);
+    /* backdrop-filter: blur(4px); */
     color: #fff;
 }
 
@@ -74,7 +74,7 @@ export default {
     right: 0;
     border-bottom-left-radius: 1em;
     background-color: #000a;
-    backdrop-filter: blur(4px);
+    /* backdrop-filter: blur(4px); */
     color: #fff;
 
     border: 2px solid #4BBBEF;

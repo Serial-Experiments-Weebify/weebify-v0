@@ -8,6 +8,7 @@
     <div v-else>
         <h1>{{ formattedName }}</h1>
         <video controls :src="videoUrl"></video>
+        <a :href="videoUrl">Video link</a>
     </div>
 </template>
 

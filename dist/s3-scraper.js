@@ -57,7 +57,7 @@ function serialize(i) {
 exports.serialize = serialize;
 const seasoned_regex = /^([a-z0-9\-]*?)-s\d{2}e\d{2}(e[a-z0-9]*?)?\.mp4$/;
 const unseasoned_regex = /^([a-z0-9\-]*)\.mp4$/;
-const cover_regex = /^([a-z0-9\-]*)\.(jpe?g|png|webp)$/;
+const cover_regex = /^([a-z0-9\-]*)\.(jpe?g|png|webp|avif)$/;
 const ep_regex = /s(\d{2})e(\d{2})(?:e([a-z0-9]*))?/;
 function getSeasonEpisode(key) {
     const m = key.match(ep_regex);
@@ -85,15 +85,16 @@ class AWSScraper {
         return __awaiter(this, void 0, void 0, function* () {
             const prefix = `${this.prefix}metadata/covers/`;
             const prefixedObjects = yield this.s3.listObjectsV2({ Bucket: this.bucket, Prefix: prefix }).promise();
-            const unfilteredObjects = (_a = prefixedObjects.Contents) === null || _a === void 0 ? void 0 : _a.map(obj => { var _a; return (_a = obj.Key) === null || _a === void 0 ? void 0 : _a.substr(prefix.length); });
-            const objects = unfilteredObjects === null || unfilteredObjects === void 0 ? void 0 : unfilteredObjects.filter(obj => obj === null || obj === void 0 ? void 0 : obj.match(cover_regex));
+            const unfilteredObjects = (_a = prefixedObjects.Contents) === null || _a === void 0 ? void 0 : _a.map(obj => { var _a; return (Object.assign(Object.assign({}, obj), { nkey: (_a = obj.Key) === null || _a === void 0 ? void 0 : _a.substr(prefix.length) })); });
+            const objects = unfilteredObjects === null || unfilteredObjects === void 0 ? void 0 : unfilteredObjects.filter(obj => { var _a; return (_a = obj.nkey) === null || _a === void 0 ? void 0 : _a.match(cover_regex); });
             const map = new Map();
-            objects === null || objects === void 0 ? void 0 : objects.forEach(x => {
-                const key = x === null || x === void 0 ? void 0 : x.split('.')[0];
+            objects === null || objects === void 0 ? void 0 : objects.forEach((x) => __awaiter(this, void 0, void 0, function* () {
+                var _b;
+                const key = (_b = x.nkey) === null || _b === void 0 ? void 0 : _b.split('.')[0];
                 if (!key)
                     return;
                 map.set(key, `${this.baseUrl}${prefix}${x}`);
-            });
+            }));
             return map;
         });
     }

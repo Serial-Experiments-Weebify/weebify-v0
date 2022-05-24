@@ -81,7 +81,7 @@ export function serialize(i: AllMedia): SerializedMedia {
 
 const seasoned_regex = /^([a-z0-9\-]*?)-s\d{2}e\d{2}(e[a-z0-9]*?)?\.mp4$/;
 const unseasoned_regex = /^([a-z0-9\-]*)\.mp4$/;
-const cover_regex = /^([a-z0-9\-]*)\.(jpe?g|png|webp)$/;
+const cover_regex = /^([a-z0-9\-]*)\.(jpe?g|png|webp|avif)$/;
 const ep_regex = /s(\d{2})e(\d{2})(?:e([a-z0-9]*))?/;
 
 function getSeasonEpisode(key: string): { season: number, episode: number, extra: boolean, extraName?: string } {
@@ -123,14 +123,13 @@ export class AWSScraper {
         const prefix = `${this.prefix}metadata/covers/`;
         const prefixedObjects = await this.s3.listObjectsV2({ Bucket: this.bucket, Prefix: prefix }).promise();
 
-        const unfilteredObjects = prefixedObjects.Contents?.map(obj => obj.Key?.substr(prefix.length))
+        const unfilteredObjects = prefixedObjects.Contents?.map(obj => ({...obj,nkey:obj.Key?.substr(prefix.length)}))
 
-        const objects = unfilteredObjects?.filter(obj => obj?.match(cover_regex));
-
+        const objects = unfilteredObjects?.filter(obj => obj.nkey?.match(cover_regex));
         const map = new Map<string, string>();
 
-        objects?.forEach(x => {
-            const key = x?.split('.')[0];
+        objects?.forEach(async x => {
+            const key = x.nkey?.split('.')[0];
             if (!key) return;
             map.set(key, `${this.baseUrl}${prefix}${x}`);
         })
