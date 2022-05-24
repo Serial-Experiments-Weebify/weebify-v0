@@ -67,15 +67,11 @@ export default {
     right: 0;
     bottom: 0;
     background-color: #000a;
-<<<<<<< HEAD
     /* backdrop-filter: blur(4px); */
-=======
-    backdrop-filter: blur(4px);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     max-width: 100%;
->>>>>>> matic
     color: #fff;
 }
 

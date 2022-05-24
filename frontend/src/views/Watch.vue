@@ -35,7 +35,7 @@
                 </button>
             </div>
         </div>
-        <a :href="videoUrl">Video link</a>
+        <a class="video-link" :href="video?.publicUrl">Video link</a>
     </div>
 </template>
 
@@ -155,6 +155,12 @@ export default {
 </script>
 
 <style lang="less">
+.video-link {
+    display: block;
+    margin: .5rem;
+    color: #5abeed;
+}
+
 #video {
     display: flex;
     flex-direction: column;

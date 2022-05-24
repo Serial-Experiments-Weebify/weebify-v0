@@ -85,12 +85,11 @@ class AWSScraper {
         return __awaiter(this, void 0, void 0, function* () {
             const prefix = `${this.prefix}metadata/covers/`;
             const prefixedObjects = yield this.s3.listObjectsV2({ Bucket: this.bucket, Prefix: prefix }).promise();
-            const unfilteredObjects = (_a = prefixedObjects.Contents) === null || _a === void 0 ? void 0 : _a.map(obj => { var _a; return (Object.assign(Object.assign({}, obj), { nkey: (_a = obj.Key) === null || _a === void 0 ? void 0 : _a.substr(prefix.length) })); });
-            const objects = unfilteredObjects === null || unfilteredObjects === void 0 ? void 0 : unfilteredObjects.filter(obj => { var _a; return (_a = obj.nkey) === null || _a === void 0 ? void 0 : _a.match(cover_regex); });
+            const unfilteredObjects = (_a = prefixedObjects.Contents) === null || _a === void 0 ? void 0 : _a.map(obj => { var _a; return (_a = obj.Key) === null || _a === void 0 ? void 0 : _a.substr(prefix.length); });
+            const objects = unfilteredObjects === null || unfilteredObjects === void 0 ? void 0 : unfilteredObjects.filter(obj => obj.match(cover_regex));
             const map = new Map();
             objects === null || objects === void 0 ? void 0 : objects.forEach((x) => __awaiter(this, void 0, void 0, function* () {
-                var _b;
-                const key = (_b = x.nkey) === null || _b === void 0 ? void 0 : _b.split('.')[0];
+                const key = x.split('.')[0];
                 if (!key)
                     return;
                 map.set(key, `${this.baseUrl}${prefix}${x}`);

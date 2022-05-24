@@ -123,13 +123,13 @@ export class AWSScraper {
         const prefix = `${this.prefix}metadata/covers/`;
         const prefixedObjects = await this.s3.listObjectsV2({ Bucket: this.bucket, Prefix: prefix }).promise();
 
-        const unfilteredObjects = prefixedObjects.Contents?.map(obj => ({...obj,nkey:obj.Key?.substr(prefix.length)}))
+        const unfilteredObjects = prefixedObjects.Contents?.map(obj =>obj.Key?.substr(prefix.length) as string)
 
-        const objects = unfilteredObjects?.filter(obj => obj.nkey?.match(cover_regex));
+        const objects = unfilteredObjects?.filter(obj => obj.match(cover_regex));
         const map = new Map<string, string>();
 
         objects?.forEach(async x => {
-            const key = x.nkey?.split('.')[0];
+            const key = x.split('.')[0];
             if (!key) return;
             map.set(key, `${this.baseUrl}${prefix}${x}`);
         })
