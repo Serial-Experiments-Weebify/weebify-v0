@@ -36,13 +36,18 @@
             </div>
         </div>
         <a class="video-link" :href="video?.publicUrl">Video link</a>
+        <send-to-sync :url="video?.publicUrl"/>
     </div>
 </template>
 
 <script>
 import { mapState } from "vuex";
+import SendToSync from "../components/SendToSync.vue";
 
 export default {
+    components: {
+        SendToSync
+    },
     props: ["name", "season", "episode", "extra"],
     methods: {
         goto(ep) {
