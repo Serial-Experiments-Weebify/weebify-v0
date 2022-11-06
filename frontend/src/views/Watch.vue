@@ -5,38 +5,35 @@
     <div v-else-if="!valid">
         <h1>Error</h1>
     </div>
-    <div v-else>
+    <div class="watch" v-else>
         <h1>{{ cleanName }}</h1>
-        <div id="video">
-            <video controls :src="video?.publicUrl"></video>
-            <div class="episode-indicator">
-                <button
-                    id="prev-ep"
-                    :disabled="!prevEp"
-                    @click="
+        <div class="video-group">
+
+            <div id="video">
+                <video controls :src="video?.publicUrl"></video>
+                <div class="episode-indicator">
+                    <button id="prev-ep" :disabled="!prevEp" @click="
                         () => {
                             goto(prevEp);
                         }
-                    "
-                >
-                   &lt; Previous
-                </button>
-                <span id="ep-tag">{{ episodeTag }}</span>
-                <button
-                    id="next-ep"
-                    :disabled="!nextEp"
-                    @click="
+                    ">
+                        &lt; Previous
+                    </button>
+                    <span id="ep-tag">{{ episodeTag }}</span>
+                    <button id="next-ep" :disabled="!nextEp" @click="
                         () => {
                             goto(nextEp);
                         }
-                    "
-                >
-                    Next &gt;
-                </button>
+                    ">
+                        Next &gt;
+                    </button>
+                </div>
+            </div>
+            <div class="links">
+                <a class="video-link" :href="video?.publicUrl">Video link</a>
+                <send-to-sync :url="video?.publicUrl" />
             </div>
         </div>
-        <a class="video-link" :href="video?.publicUrl">Video link</a>
-        <send-to-sync :url="video?.publicUrl"/>
     </div>
 </template>
 
@@ -55,7 +52,7 @@ export default {
             let extra = undefined;
             if (ep.extra) extra = ep.extraName;
 
-            this.$router.push({
+            this.$router.replace({
                 name: "WatchEpisode",
                 params: {
                     season,
@@ -97,12 +94,16 @@ export default {
                     );
                 }
             }
-    ~/git/bucket-anime-explorer/frontend  on  
+        },
+        cleanName() {
+            return this.name.replace(/-/g, " ");
+        },
+        episodeTag() {
+            if (!this.video) return "";
             if (this.media.type === "single") return this.media.name;
 
-            return `S${this.video.season}E${this.video.episode}${
-                this.video.extra ? `.${this.video.extraName}` : ""
-            }`;
+            return `S${this.video.season}E${this.video.episode}${this.video.extra ? `.${this.video.extraName}` : ""
+                }`;
         },
         allEpisodes() {
             if (!this.media) return;
@@ -155,46 +156,68 @@ export default {
 </script>
 
 <style lang="less">
-.video-link {
-    display: block;
-    margin: .5rem;
-    color: #5abeed;
-}
-
-#video {
+.watch {
     display: flex;
     flex-direction: column;
-    align-items: stretch;
-    background-color: #000;
-
-    width: 95vw;
-    video {
-        max-height: 80vh;
-    }
-    .episode-indicator {
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+    .links {
         display: flex;
         flex-direction: row;
-        justify-content: space-evenly;
         align-items: center;
+        justify-content: center;
+        margin-top: 1rem;
+        // .video-link {
+        //     margin-top: 1rem;
+        // }
+    }
+    .video-link {
+        display: block;
+        margin: .5rem;
+        color: #5abeed;
+    }
 
-        #ep-tag {
-            height: fit-content;
+    #video {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        background-color: #000;
+
+        width: 95vw;
+
+        video {
+            max-height: 80vh;
         }
 
-        button {
-            padding: .5em;
-            border: none;
-            outline: none;
-            background: none;
+        .episode-indicator {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-evenly;
+            align-items: center;
 
-            color: #fff;
-            font-weight: bold;
-            font-size: initial;
-            &:hover {
-                color: #4bbbef;
+            #ep-tag {
+                height: fit-content;
             }
-            &:disabled {
-                color: #888;
+
+            button {
+                padding: .5em;
+                border: none;
+                outline: none;
+                background: none;
+
+                color: #fff;
+                font-weight: bold;
+                font-size: initial;
+
+                &:hover {
+                    color: #4bbbef;
+                }
+
+                &:disabled {
+                    color: #888;
+                }
             }
         }
     }
