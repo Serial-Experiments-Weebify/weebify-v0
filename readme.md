@@ -6,7 +6,6 @@ Mostly just experiments...
 - A place to test random UX
 - A way to explore metadata detection / scraping
 
-## What this is isn't
+## What this isn't
 - A proper CRUD API
 - The final version of weebify
-
