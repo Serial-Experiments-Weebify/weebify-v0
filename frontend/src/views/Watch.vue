@@ -35,13 +35,19 @@
                 </button>
             </div>
         </div>
+        <a class="video-link" :href="video?.publicUrl">Video link</a>
+        <send-to-sync :url="video?.publicUrl"/>
     </div>
 </template>
 
 <script>
 import { mapState } from "vuex";
+import SendToSync from "../components/SendToSync.vue";
 
 export default {
+    components: {
+        SendToSync
+    },
     props: ["name", "season", "episode", "extra"],
     methods: {
         goto(ep) {
@@ -91,12 +97,7 @@ export default {
                     );
                 }
             }
-        },
-        cleanName() {
-            return this.name.replace(/-/g, " ");
-        },
-        episodeTag() {
-            if (!this.video) return "";
+    ~/git/bucket-anime-explorer/frontend  on  
             if (this.media.type === "single") return this.media.name;
 
             return `S${this.video.season}E${this.video.episode}${
@@ -154,6 +155,12 @@ export default {
 </script>
 
 <style lang="less">
+.video-link {
+    display: block;
+    margin: .5rem;
+    color: #5abeed;
+}
+
 #video {
     display: flex;
     flex-direction: column;
