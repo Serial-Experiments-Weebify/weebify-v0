@@ -53,7 +53,11 @@ const store = createStore({
             return Object.values(state.seasoned);
         },
         getSeasonedMedia(state) {
-            return (name) => state.seasoned[name];
+            return (name) => {
+                console.log(name,state);
+                console.log(state.seasoned[name]);
+                return state.seasoned[name];
+            }
         },
         getUnseasonedMedia(state) {
             return (name) => state.unseasoned[name];

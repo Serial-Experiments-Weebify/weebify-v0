@@ -66,8 +66,8 @@ export default {
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: #000a;
-    backdrop-filter: blur(4px);
+    background-color: #000c;
+    /* backdrop-filter: blur(4px); */
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -81,8 +81,8 @@ export default {
     top: 0;
     right: 0;
     border-bottom-left-radius: 1em;
-    background-color: #000a;
-    backdrop-filter: blur(4px);
+    background-color: #000c;
+    /* backdrop-filter: blur(4px); */
     color: #fff;
 
     border: 2px solid #4BBBEF;
@@ -91,12 +91,14 @@ export default {
 }
 
 .media:hover {
-    transition: 0.1s linear;
-    box-shadow: 2px 2px 6px 2px #4BBBEF;
+    transition: 0.2s cubic-bezier(0.22, 0.61, 0.36, 1);
+    box-shadow: 0 0 1rem 1rem #0008;
+    z-index: 10;
+    transform: scale(1.3);
 }
 
 .media:hover > .title {
-    transition: 0.1s linear;
+    transition: 0.2s linear;
     color: #4BBBEF;
 }
 </style>

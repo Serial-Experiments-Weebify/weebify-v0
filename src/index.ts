@@ -22,7 +22,7 @@ app.use('/', express.static('./frontend/dist'));
 async function main() {
     const config = JSON.parse(await readFile(process.env.CONF ?? './conf.json', 'utf8'))
     const s = new AWSScraper(config.s3);
-1
+
     allMedia = serialize(await s.scan());
 
     setInterval(async () => {

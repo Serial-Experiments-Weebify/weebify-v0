@@ -31,6 +31,9 @@
                 />
             </div>
         </div>
+        <p>
+            &copy; Weebify
+        </p>
     </div>
 </template>
 
@@ -111,5 +114,8 @@ export default {
     grid-gap: 0.5em;
     /* grid-template-columns: repeat(auto-fill, 7em); */
     grid-template-columns: repeat(auto-fill, minmax(10em, 1fr));
+}
+p {
+    text-align: center;
 }
 </style>
