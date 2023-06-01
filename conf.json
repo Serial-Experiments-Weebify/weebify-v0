@@ -3,8 +3,8 @@
         "auth": {
             "endpoint": "https://{service}.{region}.wasabisys.com/",
             "region": "eu-central-1",
-            "accessKeyId": "7F86S3EV3YLM8DEG5CL0",
-            "secretAccesssKey": "VOQMaHRntlqp7iCTBfSgaLJsMnKbiJ5SRi9W704w"
+            "accessKeyId": "ENXZ6NDC1CZ1JNBWV565",
+            "secretAccesssKey": "fwtmCMgc6V13Fjz5edk6pLOh8wc17meRDHaSOsfp"
         },
         "general": {
             "bucket": "cdn.femboy.si",

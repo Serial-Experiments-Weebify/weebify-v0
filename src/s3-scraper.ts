@@ -1,4 +1,4 @@
-import * as AWS from "aws-sdk"
+import * as AWS from "aws-sdk";
 
 interface Video {
     key: string;
@@ -6,8 +6,8 @@ interface Video {
 }
 
 enum MediaType {
-    SINGLE = 'single',
-    MULTIPLE = 'multiple'
+    SINGLE = "single",
+    MULTIPLE = "multiple",
 }
 
 interface MediaRoot {
@@ -38,9 +38,8 @@ interface SingleMedia extends MediaRoot {
     video: Video;
 }
 
-
 export interface AllMedia {
-    seasoned: Map<string, SeasonedMediaRoot>,
+    seasoned: Map<string, SeasonedMediaRoot>;
     unseasoned: Map<string, SingleMedia>;
 }
 
@@ -48,22 +47,22 @@ export interface SerializedMedia {
     seasoned: {
         [index: string]: {
             type: MediaType.MULTIPLE;
-            name: string,
-            imageUrl?: string,
+            name: string;
+            imageUrl?: string;
             seasons: {
-                [index: number]: Season
-            }
-        }
-    }
+                [index: number]: Season;
+            };
+        };
+    };
     unseasoned: {
-        [index: string]: SingleMedia
-    }
+        [index: string]: SingleMedia;
+    };
 }
 
 export function serialize(i: AllMedia): SerializedMedia {
     const a: SerializedMedia = {
         seasoned: {},
-        unseasoned: Object.fromEntries(i.unseasoned)
+        unseasoned: Object.fromEntries(i.unseasoned),
     };
 
     [...i.seasoned.entries()].forEach(([k, v]) => {
@@ -71,20 +70,24 @@ export function serialize(i: AllMedia): SerializedMedia {
             type: MediaType.MULTIPLE,
             name: v.name,
             seasons: Object.fromEntries(v.seasons),
-            imageUrl: v.imageUrl
+            imageUrl: v.imageUrl,
         };
-    })
+    });
 
-    return a
+    return a;
 }
-
 
 const seasoned_regex = /^([a-z0-9\-]*?)-s\d{2}e\d{2}(e[a-z0-9]*?)?\.mp4$/;
 const unseasoned_regex = /^([a-z0-9\-]*)\.mp4$/;
 const cover_regex = /^([a-z0-9\-]*)\.(jpe?g|png|webp|avif)$/;
 const ep_regex = /s(\d{2})e(\d{2})(?:e([a-z0-9]*))?/;
 
-function getSeasonEpisode(key: string): { season: number, episode: number, extra: boolean, extraName?: string } {
+function getSeasonEpisode(key: string): {
+    season: number;
+    episode: number;
+    extra: boolean;
+    extraName?: string;
+} {
     const m = key.match(ep_regex);
     const se: any = { season: 0, episode: 0, extra: false };
 
@@ -101,16 +104,17 @@ function getSeasonEpisode(key: string): { season: number, episode: number, extra
     return se;
 }
 
-
 export class AWSScraper {
     private s3: AWS.S3;
     private bucket: string;
     private prefix: string;
     private baseUrl: string;
 
-    public constructor(config: { auth: any, general: { bucket: string, prefix: string, baseUrl: string } }) {
-
-        const cfg = new AWS.Config(config.auth)
+    public constructor(config: {
+        auth: any;
+        general: { bucket: string; prefix: string; baseUrl: string };
+    }) {
+        const cfg = new AWS.Config(config.auth);
 
         this.s3 = new AWS.S3(cfg);
         this.bucket = config.general.bucket;
@@ -118,21 +122,26 @@ export class AWSScraper {
         this.baseUrl = config.general.baseUrl;
     }
 
-
     private async getCovers() {
         const prefix = `${this.prefix}metadata/covers/`;
-        const prefixedObjects = await this.s3.listObjectsV2({ Bucket: this.bucket, Prefix: prefix }).promise();
+        const prefixedObjects = await this.s3
+            .listObjectsV2({ Bucket: this.bucket, Prefix: prefix })
+            .promise();
 
-        const unfilteredObjects = prefixedObjects.Contents?.map(obj =>obj.Key?.substr(prefix.length) as string)
+        const unfilteredObjects = prefixedObjects.Contents?.map(
+            (obj) => obj.Key?.substr(prefix.length) as string
+        );
 
-        const objects = unfilteredObjects?.filter(obj => obj.match(cover_regex));
+        const objects = unfilteredObjects?.filter((obj) =>
+            obj.match(cover_regex)
+        );
         const map = new Map<string, string>();
 
-        objects?.forEach(async x => {
-            const key = x.split('.')[0];
+        objects?.forEach(async (x) => {
+            const key = x.split(".")[0];
             if (!key) return;
             map.set(key, `${this.baseUrl}${prefix}${x}`);
-        })
+        });
 
         return map;
     }
@@ -141,17 +150,30 @@ export class AWSScraper {
         const seasoned_map = new Map<string, SeasonedMediaRoot>();
         const single_map = new Map<string, SingleMedia>();
 
-        const prefixedObjects = await this.s3.listObjectsV2({ Bucket: this.bucket, Prefix: this.prefix }).promise();
+        const prefixedObjects = await this.s3
+            .listObjectsV2({
+                Bucket: this.bucket,
+                Prefix: this.prefix,
+                MaxKeys: 10_000,
+            })
+            .promise();
 
-        const unfilteredObjects = prefixedObjects.Contents?.map(object => object.Key?.substring(this.prefix.length)) ?? [];
+        const unfilteredObjects =
+            prefixedObjects.Contents?.map((object) =>
+                object.Key?.substring(this.prefix.length)
+            ) ?? [];
 
-        const objects = unfilteredObjects.filter(obj => !obj?.startsWith("metadata/"));
+        const objects = unfilteredObjects.filter(
+            (obj) => !obj?.startsWith("metadata/")
+        );
 
-        const seasonedVideos = objects.filter(object => seasoned_regex.test(object ?? ''));
+        const seasonedVideos = objects.filter((object) =>
+            seasoned_regex.test(object ?? "")
+        );
 
         const coverMap = await this.getCovers();
 
-        seasonedVideos.forEach(key => {
+        seasonedVideos.forEach((key) => {
             if (!key) return;
             const match = key.match(seasoned_regex);
 
@@ -163,10 +185,10 @@ export class AWSScraper {
                 root = {
                     type: MediaType.MULTIPLE,
                     name: match[1],
-                    seasons: new Map<number, Season>()
-                }
+                    seasons: new Map<number, Season>(),
+                };
                 if (cover) {
-                    root.imageUrl = cover
+                    root.imageUrl = cover;
                 }
                 seasoned_map.set(match[1], root);
             }
@@ -178,29 +200,38 @@ export class AWSScraper {
             if (!season) {
                 season = {
                     season: se.season,
-                    episodes: []
-                }
+                    episodes: [],
+                };
                 root.seasons.set(se.season, season);
             }
-            season.episodes.push({ key: match[1], publicUrl: this.baseUrl + this.prefix + key, ...se });
+            season.episodes.push({
+                key: match[1],
+                publicUrl: this.baseUrl + this.prefix + key,
+                ...se,
+            });
+        });
 
-        })
+        objects
+            .filter((x) => x?.endsWith("mp4") && !seasonedVideos.includes(x))
+            .forEach((key) => {
+                const match = key?.match(unseasoned_regex);
+                if (!match || !key) return;
 
-        objects.filter(x => x?.endsWith('mp4') && !seasonedVideos.includes(x)).forEach((key) => {
-            const match = key?.match(unseasoned_regex);
-            if (!match || !key) return;
-
-            const cover = coverMap.get(match[1]);
-            const media: SingleMedia = { name: match[1], type: MediaType.SINGLE, video: { key, publicUrl: this.baseUrl + this.prefix + key } };
-            if (cover) {
-                media.imageUrl = cover;
-            }
-            single_map.set(match[1], media);
-        })
+                const cover = coverMap.get(match[1]);
+                const media: SingleMedia = {
+                    name: match[1],
+                    type: MediaType.SINGLE,
+                    video: { key, publicUrl: this.baseUrl + this.prefix + key },
+                };
+                if (cover) {
+                    media.imageUrl = cover;
+                }
+                single_map.set(match[1], media);
+            });
 
         return {
             seasoned: seasoned_map,
-            unseasoned: single_map
-        }
+            unseasoned: single_map,
+        };
     }
 }
