@@ -18,6 +18,8 @@ app.get("/media", (req, res) => {
 app.use(history());
 app.use("/", express.static("./frontend/dist"));
 
+app.listen(8080);
+
 async function main() {
     const config = JSON.parse(
         await readFile(process.env.CONF ?? "./conf.json", "utf8")
