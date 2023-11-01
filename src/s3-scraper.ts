@@ -1,4 +1,4 @@
-import * as AWS from "aws-sdk";
+import { S3 } from "@aws-sdk/client-s3";
 
 interface Video {
     key: string;
@@ -105,7 +105,7 @@ function getSeasonEpisode(key: string): {
 }
 
 export class AWSScraper {
-    private s3: AWS.S3;
+    private s3: S3;
     private bucket: string;
     private prefix: string;
     private baseUrl: string;
@@ -114,9 +114,7 @@ export class AWSScraper {
         auth: any;
         general: { bucket: string; prefix: string; baseUrl: string };
     }) {
-        const cfg = new AWS.Config(config.auth);
-
-        this.s3 = new AWS.S3(cfg);
+        this.s3 = new S3({ ...config.auth, forcePathStyle: false });
         this.bucket = config.general.bucket;
         this.prefix = config.general.prefix;
         this.baseUrl = config.general.baseUrl;
@@ -124,9 +122,10 @@ export class AWSScraper {
 
     private async getCovers() {
         const prefix = `${this.prefix}metadata/covers/`;
-        const prefixedObjects = await this.s3
-            .listObjectsV2({ Bucket: this.bucket, Prefix: prefix })
-            .promise();
+        const prefixedObjects = await this.s3.listObjectsV2({
+            Bucket: this.bucket,
+            Prefix: prefix,
+        });
 
         const unfilteredObjects = prefixedObjects.Contents?.map(
             (obj) => obj.Key?.substr(prefix.length) as string
@@ -150,13 +149,11 @@ export class AWSScraper {
         const seasoned_map = new Map<string, SeasonedMediaRoot>();
         const single_map = new Map<string, SingleMedia>();
 
-        const prefixedObjects = await this.s3
-            .listObjectsV2({
-                Bucket: this.bucket,
-                Prefix: this.prefix,
-                MaxKeys: 10_000,
-            })
-            .promise();
+        const prefixedObjects = await this.s3.listObjectsV2({
+            Bucket: this.bucket,
+            Prefix: this.prefix,
+            MaxKeys: 10_000,
+        });
 
         const unfilteredObjects =
             prefixedObjects.Contents?.map((object) =>

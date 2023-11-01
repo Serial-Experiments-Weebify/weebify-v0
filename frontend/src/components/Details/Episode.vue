@@ -1,5 +1,5 @@
 <template>
-    <div class="details-episode" @click="goto(season,    episode,    extra)">
+    <div class="details-episode" @click="goto(season, episode, extra)">
         <span class="tag">{{ tag }}</span>
         <span class="title">{{ title }}</span>
         <div class="spacer"></div>
@@ -34,23 +34,9 @@ export default {
         },
         indicatorStyle() {
             return {
-                display:
-                    'none'
-            };
-            const fraction = this.progress / this.length;
-            if (isNaN(fraction)) fraction = 0;
-
-            let clampedPercentage = Math.max(0, Math.min(fraction * 100, 100));
-
-            if (clampedPercentage > 90) clampedPercentage = 100;
-            if (clampedPercentage < 5) clampedPercentage = 0;
-
-            return {
-                width: `${clampedPercentage}%`,
-                display: clampedPercentage !== 0 ? "block" : "none",
+                display: "none",
             };
         },
-
     },
 
     methods: {
@@ -61,8 +47,9 @@ export default {
             n %= 60;
             const s = n;
 
-            return `${h > 0 ? `${h}:` : ""}${h > 0 ? padNumber(m, 2) : m
-                }:${padNumber(s, 2)}`;
+            return `${h > 0 ? `${h}:` : ""}${
+                h > 0 ? padNumber(m, 2) : m
+            }:${padNumber(s, 2)}`;
         },
         goto(s, e, extra) {
             console.log({ s, e, extra });
@@ -113,7 +100,7 @@ export default {
         background-color: #4bbbef;
     }
     &:hover {
-        transition: .2s ease-out;
+        transition: 0.2s ease-out;
         background-color: #4bbbef;
     }
 }

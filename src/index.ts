@@ -1,6 +1,5 @@
 import { AllMedia, AWSScraper, serialize, SerializedMedia } from "./s3-scraper";
 import { readFile, readdir } from "fs/promises";
-import * as AWS from "aws-sdk";
 import express from "express";
 import cors from "cors";
 import morgan from "morgan";
